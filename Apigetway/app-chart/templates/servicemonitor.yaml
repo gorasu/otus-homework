@@ -1,0 +1,20 @@
+{{- if .Values.metrics.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "app-chart.fullname" . }}
+  labels:
+   app: {{ include "app-chart.labels" . }}
+spec:
+  jobLabel: {{ include "app-chart.fullname" . }}
+  namespaceSelector:
+    matchNames:
+      - "{{ $.Release.Namespace }}"
+  selector:
+    matchLabels:
+      proms: app-prom
+  endpoints:
+    - interval: 15s
+      port: web
+      path: /metric
+{{- end }}
