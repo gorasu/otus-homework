@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: {{ include "app-chart.fullname" . }}
-          image: gorasu/task4:{{ .Values.app.version }}
+          image: {{ .Values.app.image_user }}
           ports:
             - name: http
               containerPort: 8000
