@@ -14,7 +14,7 @@ spec:
           envFrom:
               - configMapRef:
                   name: {{ include "app-chart.fullname" . }}
-          image: gorasu/task4:{{ .Values.app.version }}
+          image: {{ .Values.app.image_user }}
           command:
             - sh
             - "-c"
