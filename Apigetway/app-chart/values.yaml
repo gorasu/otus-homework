@@ -1,6 +1,6 @@
 app:
   version: 4.0.1
-  image-user: gorasu/task4:4.0.2
+  image_user: gorasu/task4:4.0.3
 
 metrics:
   serviceMonitor:
