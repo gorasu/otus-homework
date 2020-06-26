@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: {{ include "auth.fullname" . }}
 data:
-  USER_SERVICE: http://app-app-chart.default.svc.cluster.local:9000/
+  USER_SERVICE: {{ .Values.app.userService }}
