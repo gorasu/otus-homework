@@ -1,0 +1,14 @@
+apiVersion: skaffold/v2beta2
+kind: Config
+build:
+
+deploy:
+  helm:
+    releases:
+      - name: auth-chart
+        chartPath: auth-chart
+        setValues:
+          app.userService: http://app-chart.default.svc.cluster.local:9000
+          app.authService: http://auth-chart.default.svc.cluster.local:9000
+      - name: app-chart
+        chartPath: app-chart
