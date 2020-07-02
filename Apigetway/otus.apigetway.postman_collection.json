@@ -34,6 +34,13 @@
 							"      pm.expect(jsonData.status).to.eql('ok');",
 							"     ",
 							"});",
+							"",
+							"",
+							"pm.test(\"Response has id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"      pm.expect(jsonData.id).to.not.eql(null);",
+							"     ",
+							"});",
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"firstId\", jsonData.id)"
 						],
@@ -239,6 +246,14 @@
 					"script": {
 						"id": "a7bf9a46-0e2b-4a84-9003-25b1a2b10439",
 						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Status is ok\", function () {",
+							"    var jsonData = pm.response.json();",
+							"      pm.expect(jsonData.status).to.eql('ok');",
+							"});",
 							""
 						],
 						"type": "text/javascript"
@@ -302,7 +317,7 @@
 						"exec": [
 							"pm.test(\"Is updated \", function () {",
 							"    var jsonData = pm.response.json();",
-							" ",
+							" pm.expect(jsonData.id).equal(pm.collectionVariables.get(\"firstId\"));",
 							"      pm.expect(jsonData.lastName).equal(pm.collectionVariables.get(\"lastName\"));",
 							"     pm.expect(jsonData.firstName).equal(pm.collectionVariables.get(\"firstName\"));",
 							"});"
@@ -487,6 +502,26 @@
 		},
 		{
 			"name": "Выход",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e974ebdd-fa81-4eac-aace-237984739d8a",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Status is ok\", function () {",
+							"    var jsonData = pm.response.json();",
+							"      pm.expect(jsonData.status).to.eql('ok');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -905,56 +940,57 @@
 				"id": "fc69df7d-27ac-4645-b5ac-46c03cb9f4f9",
 				"type": "text/javascript",
 				"exec": [
-					""
+					"tests[\"[INFO] Request: \" + (('data' in request) ? request['data'] : '') ] = true;",
+					"tests[\"[INFO] Response: \" + responseBody] = true;"
 				]
 			}
 		}
 	],
 	"variable": [
 		{
-			"id": "4764792b-2e9a-4cc8-ad81-76890445a61b",
+			"id": "2c27d632-0c97-4b16-b06a-2532022f5f27",
 			"key": "baseUrl",
 			"value": "arch.homework",
 			"type": "string"
 		},
 		{
-			"id": "aa255c73-b530-483a-a356-2f04ca7cdfc2",
+			"id": "03ee733d-892f-432c-b0f9-e21934bcf907",
 			"key": "email",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "e650d742-34c3-4abc-8bbf-566d0aa135a0",
+			"id": "6a0211de-ee55-49d0-9b5d-d52f8f51787c",
 			"key": "firstName",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "f331e8a1-efbb-4cda-bea2-d7dc59a4459c",
+			"id": "f27aef06-708f-47b5-bc24-9526e51369d5",
 			"key": "lastName",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "625a2600-9ea3-4c42-9ec2-3d620740d7bf",
+			"id": "22b14097-901b-4566-a5f2-15c1e18c2fc1",
 			"key": "password",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "673595b7-3f98-4947-82cb-3beea2b434b7",
+			"id": "09815be1-1afe-415f-bdd7-7fc941b6805c",
 			"key": "user_id",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "b23261ed-f1a4-4e8b-8b16-e1851d3624e4",
+			"id": "4ae1b123-e73a-41e9-ba89-d022c4ca3b5b",
 			"key": "sessionCookies",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "398370c6-4cc6-4148-b364-d4c35a966a5a",
+			"id": "5e5ca622-a51f-4c00-afd3-c0b5638fe466",
 			"key": "firstId",
 			"value": "",
 			"type": "string"
