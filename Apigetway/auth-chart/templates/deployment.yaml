@@ -5,7 +5,7 @@ metadata:
   labels:
       {{ include "auth.labels" . | nindent 4  }}
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
        {{ include "auth.labels" .  | nindent 6 }}
@@ -14,6 +14,10 @@ spec:
       labels:
         {{ include "auth.labels" . |  nindent 8  }}
     spec:
+      volumes:
+      - name: session
+        persistentVolumeClaim:
+          claimName: {{ include "auth.fullname" . }}-pvc
       containers:
         - name: {{ .Chart.Name }}
           image: {{ .Values.app.image }}
@@ -24,3 +28,6 @@ spec:
             - configMapRef:
                 name: {{ include "auth.fullname" . }}
 
+          volumeMounts:
+            - mountPath: /tmp
+              name: session
