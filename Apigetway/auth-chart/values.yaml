@@ -5,6 +5,7 @@
 app:
   image: gorasu/auth:0.0.2
   userService: http://user-app-chart.default.svc.cluster.local:9000
+  authService: http://auth-app-chart.default.svc.cluster.local:9000
 
 metrics:
   serviceMonitor:
