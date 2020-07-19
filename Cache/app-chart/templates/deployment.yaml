@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "usecase.fullname" . }}
+  labels:
+      {{ include "usecase.labels" . | nindent 4  }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+       {{ include "usecase.labels" .  | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{ include "usecase.labels" . |  nindent 8  }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.app.image }}
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: {{ include "usecase.fullname" . }}
