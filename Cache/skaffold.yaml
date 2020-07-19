@@ -8,4 +8,4 @@ deploy:
       - name: usecase-chart
         chartPath: usecase-chart
         setValues:
-          app.redis: http://app-chart.default.svc.cluster.local:9000
+          app.redis: redis://usecase-chart-redis.default.svc.cluster.local:6379
