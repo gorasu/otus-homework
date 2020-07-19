@@ -1,0 +1,11 @@
+apiVersion: skaffold/v2beta2
+kind: Config
+build:
+
+deploy:
+  helm:
+    releases:
+      - name: usecase-chart
+        chartPath: usecase-chart
+        setValues:
+          app.redis: http://app-chart.default.svc.cluster.local:9000

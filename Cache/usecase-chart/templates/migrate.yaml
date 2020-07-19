@@ -1,19 +1,19 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "usecase-chart.fullname" . }}
+  name: {{ include "usecase.fullname" . }}
 spec:
   completions: 1
   template:
     metadata:
-      name: {{ include "usecase-chart.fullname" . }}
+      name: {{ include "usecase.fullname" . }}
     spec:
       restartPolicy: OnFailure
       containers:
         - name: post-install-job
           envFrom:
               - configMapRef:
-                  name: {{ include "usecase-chart.fullname" . }}
+                  name: {{ include "usecase.fullname" . }}
           image: {{ .Values.app.image }}
           command:
             - sh

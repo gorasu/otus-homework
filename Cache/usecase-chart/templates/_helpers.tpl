@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "auth.name" -}}
+{{- define "usecase.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "auth.fullname" -}}
+{{- define "usecase.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "auth.chart" -}}
+{{- define "usecase.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Common labels
 */}}
-{{- define "auth.labels" -}}
-helm.sh/chart: {{ include "auth.chart" . }}
-{{ include "auth.selectorLabels" . }}
+{{- define "usecase.labels" -}}
+helm.sh/chart: {{ include "usecase.chart" . }}
+{{ include "usecase.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,18 +46,22 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "auth.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "auth.name" . }}
+{{- define "usecase.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "usecase.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "auth.serviceAccountName" -}}
+{{- define "usecase.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
-    {{ default (include "auth.fullname" .) .Values.serviceAccount.name }}
+    {{ default (include "usecase.fullname" .) .Values.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
+{{- end -}}
+
+{{- define "usecase.connect" -}}
+{{- printf "mysql://%s:%s@%s:%v/%s" .Values.mysql.db.user .Values.mysql.db.password (print .Release.Name "-mysql")  .Values.mysql.service.port .Values.mysql.db.name }}
 {{- end -}}
