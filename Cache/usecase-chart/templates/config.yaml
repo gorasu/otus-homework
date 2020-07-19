@@ -6,3 +6,4 @@ data:
   DATABASE_URL: {{ include "usecase.connect" .}}
   APP_ENV: prod
   APP_SECRET: "huihduhwdeWDewjoru2342je3289jd289ejd238doijs3iosjoi2j3soi2jw12ijsp2ojps7o1jdop23dj3po1sj12pj"
+  REDIS_HOST: {{ .Values.app.redis }}
