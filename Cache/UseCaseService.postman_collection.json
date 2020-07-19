@@ -1,0 +1,290 @@
+{
+	"info": {
+		"_postman_id": "92e2b6ab-cd08-4161-9430-24ec08deb06a",
+		"name": "UseCaseService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Создать кейс",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a7bd1080-ff20-42ef-84a3-d6adb1e0357f",
+						"exec": [
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"UseCaseId\", jsonData.id.value)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/usecases/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usecases",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Сгенерировать фикстуры для поиска",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/usecases/cache",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usecases",
+						"cache"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Прогреем кеш поиска",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "69c73203-d4d6-471f-bc10-2860734a1199",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/usecases/?filter={\"title\":\"заголовок\"}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usecases",
+						""
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "{\"title\":\"заголовок\"}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получаем данные кеша поиска",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "183c30a0-15b0-49e3-90f1-a93b8ba46810",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.header(\"X-app-cache\",\"yes\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/usecases/?filter={\"title\":\"заголовок\"}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usecases",
+						""
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "{\"title\":\"заголовок\"}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получаем данные с отключенным кешем",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9dc243a4-481c-4b89-b788-8bd1b7e45203",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.header(\"X-app-cache\",\"no\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/usecases/?filter={\"title\":\"заголовок\"}&CACHE_ENABLED=1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usecases",
+						""
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "{\"title\":\"заголовок\"}"
+						},
+						{
+							"key": "CACHE_ENABLED",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Обновим кейс",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbe5d914-c609-41e5-bf9d-f2ec337ca9b8",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "{{$randomWord}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/usecases/{{UseCaseId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usecases",
+						"{{UseCaseId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Проверяем что после обновления кейся кеш был сброшен",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a6fcf3e4-0342-4104-853c-c9033e3e8246",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.header(\"X-app-cache\",\"no\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/usecases/?filter={\"title\":\"заголовок\"}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usecases",
+						""
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "{\"title\":\"заголовок\"}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "11370d94-f700-4265-95a3-8a66857afdca",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "9512d594-548c-4078-8f34-3364ab9ad2da",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "f6f8e2c5-2919-4f11-b596-e92c6da37750",
+			"key": "baseUrl",
+			"value": "http://arch.homework/cache/api/v1/",
+			"type": "string"
+		},
+		{
+			"id": "2a73ce2a-9414-4920-ade3-0c5f516b4193",
+			"key": "UseCaseId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
