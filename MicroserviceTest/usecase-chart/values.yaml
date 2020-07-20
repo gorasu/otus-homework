@@ -1,0 +1,29 @@
+app:
+  version: 0.0.2
+  image: gorasu/usecase:0.0.2
+  redis: redis://usecase-chart-redis.default.svc.cluster.local:6379
+
+
+
+metrics:
+  serviceMonitor:
+    enabled: true
+
+mysql:
+  master:
+    persistence:
+      size: 8Gi
+  image:
+    tag: 5.7.27
+  db:
+    name: "myapp"
+    user: "admin"
+    password: "112233"
+  replication:
+    enabled: false
+  metrics:
+    enabled: true
+    serviceMonitor:
+        enabled: true
+        interval: 10s
+        namespace: "default"
