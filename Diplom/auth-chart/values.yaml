@@ -1,0 +1,13 @@
+# Default values for auth.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+app:
+  image: gorasu/auth:0.0.2
+  userService: http://user-app-chart.default.svc.cluster.local:9000
+  authService: http://auth-app-chart.default.svc.cluster.local:9000
+
+
+metrics:
+  serviceMonitor:
+    enabled: true

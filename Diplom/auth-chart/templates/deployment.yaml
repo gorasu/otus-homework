@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "auth.fullname" . }}
+  labels:
+      {{ include "auth.labels" . | nindent 4  }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+       {{ include "auth.labels" .  | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{ include "auth.labels" . |  nindent 8  }}
+    spec:
+      volumes:
+      - name: session
+        persistentVolumeClaim:
+          claimName: {{ include "auth.fullname" . }}-pvc
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.app.image }}
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: {{ include "auth.fullname" . }}
+
+          volumeMounts:
+            - mountPath: /tmp
+              name: session
