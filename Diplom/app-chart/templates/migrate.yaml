@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "app-chart.fullname" . }}
+spec:
+  completions: 1
+  template:
+    metadata:
+      name: {{ include "app-chart.fullname" . }}
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: post-install-job
+          envFrom:
+              - configMapRef:
+                  name: {{ include "app-chart.fullname" . }}
+          image: {{ .Values.app.image_user }}
+          command:
+            - sh
+            - "-c"
+            - |
+              cd ../ && php bin/console doctrine:migrations:migrate -n --env=prod

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "app-chart.fullname" . }}
+  labels:
+    app: {{ include "app-chart.labels" . }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{ include "app-chart.labels" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "app-chart.labels" . }}
+    spec:
+      containers:
+        - name: {{ include "app-chart.fullname" . }}
+          image: {{ .Values.app.image_user }}
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: {{ include "app-chart.fullname" . }}
