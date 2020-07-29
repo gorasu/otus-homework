@@ -12,6 +12,8 @@ mysql:
       size: 8Gi
   image:
     tag: 5.7.27
+  root:
+    password: "dewjoij08j4r3;R3kokewopkdew989080989ijewiodj32423423342"
   db:
     name: "myapp"
     user: "admin"
