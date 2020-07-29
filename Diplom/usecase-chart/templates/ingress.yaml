@@ -3,13 +3,16 @@ kind: Ingress
 metadata:
   name: {{ include "usecase.fullname" . }}
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /api/v1/$2
+    nginx.ingress.kubernetes.io/auth-url: "{{ .Values.app.authService }}/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "http://$host/auth/login"
+    nginx.ingress.kubernetes.io/auth-response-headers: "X-User,X-Email,X-UserId,X-First-Name,X-Last-Name"
 spec:
   rules:
     - host: arch.homework
       http:
         paths:
-          - path: /cache($|/)(.*)
+          - path: /case($|/)(.*)
             backend:
               serviceName: {{ include "usecase.fullname" . }}
               servicePort: 9000
