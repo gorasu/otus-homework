@@ -7,4 +7,4 @@ class QuickstartUser(HttpUser):
     @task
     def index_page(self):
         #self.client.get('/?filter={"title":"заголовок"}&CACHE_ENABLED=1')
-        self.client.get('/?filter={"title":"заголовок"}')
+        self.client.get('/?filter={"title":"заголовок"}', headers={"X-UserID": "123456"})
