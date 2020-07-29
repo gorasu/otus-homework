@@ -16,3 +16,4 @@ deploy:
         chartPath: usecase-chart
         setValues:
           app.redis: redis://usecase-chart-redis.default.svc.cluster.local:6379
+          app.authService: http://auth-chart.default.svc.cluster.local:9000

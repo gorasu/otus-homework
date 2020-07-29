@@ -2,7 +2,7 @@ app:
   version: 0.0.1
   image: gorasu/usecase:0.1.0
   redis: redis://usecase-chart-redis.default.svc.cluster.local:6379
-
+  authService: http://auth-app-chart.default.svc.cluster.local:9000
 
 
 metrics:
