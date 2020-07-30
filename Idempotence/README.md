@@ -12,6 +12,10 @@ helm install nginx-idempotence stable/nginx-ingress -f nginx-ingress.yaml
 
 `make helm-up`
 
+Запуск теста  
+
+`newman run otus.idempotence.postman_collection.json`
+
 
 ## Описание решения
 
