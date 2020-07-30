@@ -1,6 +1,6 @@
 app:
   version: 0.0.2
-  image: gorasu/usecase:0.1.3
+  image: gorasu/usecase:0.1.4
   redis: redis://usecase-chart-redis.default.svc.cluster.local:6379
 
 
