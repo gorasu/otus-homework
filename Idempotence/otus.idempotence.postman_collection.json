@@ -1,0 +1,94 @@
+{
+	"info": {
+		"_postman_id": "acef4aef-7ff1-43fe-9746-9056f119b7d9",
+		"name": "otus.idempotence",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Создать кейс",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d5fc4a04-0d4d-411e-b15e-56d701a7e00c",
+						"exec": [
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"UseCaseId\", jsonData.id.value)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-UserId",
+						"value": "{{$randomUUID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "{{$randomWord}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/usecases/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usecases",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "6375037d-a5c5-4043-ac26-2a18c0134b8d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "992ff502-7410-41a9-9e2d-3318d3af6398",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "09166e97-40b5-419b-b34b-6252eb876543",
+			"key": "baseUrl",
+			"value": "http://arch.homework/idempotence/api/v1/usecases",
+			"type": "string"
+		},
+		{
+			"id": "da0e940a-0ad7-4a08-a7bc-edebc6be9921",
+			"key": "UseCaseId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
