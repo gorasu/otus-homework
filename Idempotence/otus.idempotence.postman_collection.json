@@ -1,0 +1,189 @@
+{
+	"info": {
+		"_postman_id": "acef4aef-7ff1-43fe-9746-9056f119b7d9",
+		"name": "otus.idempotence",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Создать кейс",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d5fc4a04-0d4d-411e-b15e-56d701a7e00c",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							" var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"CreatedEntityId\", jsonData.id.value)",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7b612cf1-9bb3-406c-8c2a-c48642a87db3",
+						"exec": [
+							"pm.collectionVariables.set(\"IdempotenceKey\", pm.variables.replaceIn('{{$guid}}'))",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-UserId",
+						"value": "{{$randomUUID}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Idempotence-Key",
+						"value": "{{IdempotenceKey}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "{{$randomWord}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/idenpotent-create",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"idenpotent-create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Посторное создание кейса",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8d2c4964-9c1a-4f31-9c54-bd0ac8fc1a12",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Entity ids is compare\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    console.log(pm.collectionVariables.get(\"CreatedEntityId\"), jsonData.id.value)",
+							"   ",
+							"   pm.expect(jsonData.id.value).to.equal(pm.collectionVariables.get(\"CreatedEntityId\"));",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-UserId",
+						"type": "text",
+						"value": "{{$randomUUID}}"
+					},
+					{
+						"key": "X-Idempotence-Key",
+						"type": "text",
+						"value": "{{IdempotenceKey}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "{{$randomWord}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/idenpotent-create",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"idenpotent-create"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "6375037d-a5c5-4043-ac26-2a18c0134b8d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "992ff502-7410-41a9-9e2d-3318d3af6398",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "b8235951-1c92-43bc-9ab4-339dbc5bd6db",
+			"key": "baseUrl",
+			"value": "http://arch.homework/idempotence/api/v1/usecases",
+			"type": "string"
+		},
+		{
+			"id": "c10b9c81-cb2e-4416-9ade-aee0a1bf40e1",
+			"key": "UseCaseId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "3bc2ecda-4e6f-4d6f-95e4-3abff0f74e8c",
+			"key": "IdempotenceKey",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "a87afc06-f7b0-48e7-b37b-0be9cfaf5e74",
+			"key": "CreatedEntityId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
