@@ -19,6 +19,8 @@ mysql:
     name: "myapp"
     user: "admin"
     password: "112233"
+    rootUser:
+      password: "3232kwp2o3k32pokw32pw039iw03209iiw092j9032js3"
   replication:
     enabled: false
   metrics:
