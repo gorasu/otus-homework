@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chart.fullname" . }}-nginx
+  labels:
+      {{ include "chart.labels" . | nindent 4  }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+       {{ include "chart.labels" .  | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{ include "chart.labels" . |  nindent 8  }}
+      annotations:
+        version: '0.1'
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-nginx
+          image: nginx:latest
+          ports:
+            - name: nginx-port
+              containerPort: 80
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx/conf.d
+            - name: app-dir
+              mountPath: /dir
+
+      volumes:
+        - name: app-dir
+          persistentVolumeClaim:
+            claimName: app-dir
+        - name: config
+          configMap:
+            name: {{ include "chart.fullname" . }}
+            items:
+              - key: nginx_config
+                path: site.conf
+
+
