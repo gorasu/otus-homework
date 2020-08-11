@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chart.fullname" . }}
+  labels:
+      {{ include "chart.labels" . | nindent 4  }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+       {{ include "chart.labels" .  | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{ include "chart.labels" . |  nindent 8  }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.app.image }}
+          ports:
+            - name: http
+              containerPort: 9000
+          envFrom:
+            - configMapRef:
+                name: {{ include "chart.fullname" . }}
+          volumeMounts:
+            - name: app-dir
+              mountPath: /dir
+      initContainers:
+        - name: install
+          image: {{ .Values.app.image }}
+          volumeMounts:
+            - mountPath: /dir
+              name: app-dir
+          command:
+            - bash
+            - '-c'
+            - |
+              ls -la
+              cp -r /usr/src/myapp/. /dir/
+              cd /dir/
+              php bin/console cache:clear
+      volumes:
+        - name: app-dir
+          persistentVolumeClaim:
+            claimName: app-dir
