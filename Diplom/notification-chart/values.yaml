@@ -1,0 +1,14 @@
+# Default values for auth.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+app:
+  image: gorasu/notice:0.0.1
+  mailer_dsn: smtp://notice@z-site.ru:asq110788@smtp.yandex.ru
+  mailer_from: notice@z-site.ru
+
+
+
+metrics:
+  serviceMonitor:
+    enabled: true
