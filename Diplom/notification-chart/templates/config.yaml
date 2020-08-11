@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "chart.fullname" . }}
+data:
+  MAILER_DSN: {{ .Values.app.mailer_dsn }}
+  MAILER_FROM: {{ .Values.app.mailer_from }}
+  nginx_config : |
+    server {
+      index index.php index.html;
+      error_log  /var/log/nginx/error.log;
+      access_log /var/log/nginx/access.log;
+
+      root /dir/public;
+
+      location / {
+          # try to serve file directly, fallback to index.php
+          try_files $uri /index.php$is_args$args;
+      }
+
+      location ~ .php$ {
+          try_files $uri =404;
+          fastcgi_split_path_info ^(.+.php)(/.+)$;
+          fastcgi_pass notice-notification-chart.default.svc.cluster.local:9000;
+          fastcgi_index index.php;
+          include fastcgi_params;
+          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+          fastcgi_param PATH_INFO $fastcgi_path_info;
+      }
+    }
